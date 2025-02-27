@@ -81,11 +81,7 @@ for i, category in enumerate(categories):
 
 # --- Sidebar Enhancements ---
 st.sidebar.header("🕒 Conversion History")
-st.sidebar.markdown("""
-    <div style="background:#262730; padding:10px; border-radius:10px; box-shadow:0px 0px 8px rgba(0, 242, 255, 0.5);">
-    <p style="color:white; font-size:16px;">{}</p>
-    </div>
-""".format("<br>".join(history) if history else "No history yet."), unsafe_allow_html=True)
+st.sidebar.markdown("<br>".join(history) if history else "No history yet.", unsafe_allow_html=True)
 
 st.sidebar.markdown("---")
 st.sidebar.header("💬 User Comments")
@@ -96,11 +92,17 @@ if st.sidebar.button("Submit Comment"):
         comments.append(f"**{name}:** {comment}")
         save_comments(comments)
         st.sidebar.success("Comment added!")
+        st.rerun()
     else:
         st.sidebar.error("Please enter both name and comment before submitting.")
 
 st.sidebar.markdown("### Recent Comments")
-st.sidebar.markdown("<br>".join(comments) if comments else "No comments yet.", unsafe_allow_html=True)
+for i, comment in enumerate(comments):
+    st.sidebar.markdown(comment, unsafe_allow_html=True)
+    if st.sidebar.button(f"Delete {i+1}", key=f"del_{i}"):
+        comments.pop(i)
+        save_comments(comments)
+        st.rerun()
 
 # --- Footer ---
 st.markdown("<br><hr><p style='text-align: center; color: gray;'>🚀 Created with ❤️ using Streamlit | Developed by Manahil Nadeem</p>", unsafe_allow_html=True)
