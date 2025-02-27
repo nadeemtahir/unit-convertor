@@ -1,5 +1,4 @@
 import streamlit as st
-import plotly.express as px
 from collections import deque
 import json
 import os
